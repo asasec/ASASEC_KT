@@ -1,0 +1,169 @@
+#ASASEC SCRIPT
+#!/data/data/com.termux/files/usr/bin/bash -e
+
+function destekyok_arm() {
+    echo "root@asasec~# BU CEKIRDEK DESTEKLENMEZ"
+    exit
+}
+
+function paket_yukle() {
+    clear
+    sleep 2
+    echo "root@asasec~# GEREKLI PAKETLER YUKLENIYOR"
+    sleep 2
+    apt update
+    apt install proot -y
+    apt install wget -y
+    clear
+    sleep 2
+}
+
+function sıstemmodel() {
+    clear
+    sleep 2
+    printf "root@asasec~# CEKIRDEK MODELI KONTROL EDILIYOR"
+    sleep 2
+    clear
+    case $(getprop ro.product.cpu.abi) in
+        armeabi|armeabi-v7a)
+            SYS_ARCH=armhf
+            echo "root@asasec~# CEKIRDEK MODELI ARM32"
+            sleep 3
+            clear
+            ;;
+        arm64-v8a)
+            SYS_ARCH=arm64
+            echo "root@asasec~# CEKIRDEK MODELI ARM64"
+            sleep 3
+            clear
+            ;;
+        *)
+            unsupported_arch
+            ;;
+    esac
+}
+
+function dosya_secme() {
+    clear
+    sleep 2
+    echo ">>> ASASEC SCRIPT <<<"
+    echo " "
+    if [[ ${SYS_ARCH} == "armhf" ]];
+    then
+        echo "[1] ASASEC KALI ARMHF (buyuk)"
+        echo "[2] ASASEC KALI ARMHF (kucuk)"
+        echo "[3] ASASEC KALI ARMHF (orta)"
+        read -p "root@asasec~# HANGI DOSYA BUYUKLUGUNU YUKLEMEK ISTERSINIZ : " wimg
+        if (( $wimg == "1" ));
+        then
+            wimg="full"
+        elif (( $wimg == "2" ));
+        then
+            wimg="minimal"
+        elif (( $wimg == "3" ));
+        then
+            wimg="nano"
+        else
+            wimg="full"
+        fi
+    clear
+    sleep 2
+    echo ">>> ASASEC SCRIPT <<<"
+    echo " "
+    elif [[ ${SYS_ARCH} == "arm64" ]];
+    then
+        echo "[1] ASASEC KALI ARM64 (buyuk)"
+        echo "[2] ASASEC KALI ARM64 (kucuk)"
+        echo "[3] ASASEC KALI ARM64 (orta)"
+        read -p "root@asasec~# HANGI DOSYA BUYUKLUGUNU YUKLEMEK ISTERSINIZ : " wimg
+        if (( $wimg == "1" ));
+        then
+            wimg="full"
+        elif (( $wimg == "2" ));
+        then
+            wimg="minimal"
+        elif (( $wimg == "3" ));
+        then
+            wimg="nano"
+        else
+            wimg="full"
+        fi
+    fi
+}
+
+function yukleme_kalı() {
+    echo "root@asasec~# YUKLEME ISLEMI BASLIYOR"
+    sleep 2
+    clear
+    wget https://kali.download/nethunter-images/current/rootfs/kali-nethunter-rootfs-${wimg}-${SYS_ARCH}.tar.xz
+    sleep 2
+    clear
+}
+
+function cıkartma_kalı() {
+    clear
+    sleep 1
+    echo "root@asasec~# DOSYA CIKARTMA ISLEMI BASLADI"
+    sleep 2
+    proot --link2symlink tar -xf kali-nethunter-rootfs-${wimg}-armhf.tar.xz
+    sleep 2
+    clear
+}
+
+function asasec_yapıstır() {
+    cp asasec /data/data/com.termux/files/usr/bin
+    sleep 2
+    clear
+}
+
+function sudo_duzelt() {
+    chmod +s kali-armhf/usr/bin/sudo
+    chmod +s kali-armhf/usr/bin/su
+    echo "kali    ALL=(ALL:ALL) ALL" > kali-armhf/etc/sudoers.d/kali
+
+    # https://bugzilla.redhat.com/show_bug.cgi?id=1773148
+    echo "Set disable_coredump false" > kali-armhf/etc/sudo.conf
+}
+
+function versıon_yapıstır() {
+    cp .version kali-armhf/root
+    sleep 2
+    clear
+}
+
+function dosya_sıl() {
+    rm .version
+    clear
+    rm asasec
+    clear
+    rm asasec_kali
+    clear
+    rm kali-nethunter-rootfs-${wimg}-armhf.tar.xz
+    clear
+    sleep 2
+    clear
+}
+
+clear
+echo ">>> ASASEC YAPIM <<< >>> root@asasec~# <<<"
+sleep 3
+sıstemmodel
+paket_yukle
+dosya_secme
+yukleme_kalı
+cıkartma_kalı
+asasec_yapıstır
+versıon_yapıstır
+sudo_duzelt
+dosya_sıl
+
+sleep 2
+echo ">>> ASASEC SCRIPT KALI LINUX TOOL <<<"
+echo " "
+sleep 5
+echo ">>> KALI LINUX A GIRMEK ICIN asasec YAZMANIZ YETERLIDIR <<<"
+echo " "
+sleep 7
+echo ">>> SORUNLARINIZI GITHUB UZERINDEN ILETIN <<<"
+sleep 5
+clear
