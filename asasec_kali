@@ -132,7 +132,7 @@ function cıkartma_kalı() {
 }
 
 function asasec_yapıstır() {
-    cp asasec /data/data/com.termux/files/usr/bin
+    cp .Config/asasec /data/data/com.termux/files/usr/bin
     chmod +x /data/data/com.termux/files/usr/bin/asasec
     sleep 2
     clear
