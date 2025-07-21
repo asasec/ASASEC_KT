@@ -1,1 +1,11 @@
-apt update && termux-setup-storage && apt install git && git clone https://github.com/asasec/ASASEC_KT.git && cd ASASEC_KT && chmod +x * && bash asasec_kali >>>>>> SCRIPT BITTIKTEN SONRA asasec yazarak kali linux a girebilirsiniz :)))
+## YUKLEMEK ICIN
+
+BUNLARI YAPISTIR:
+```shell
+apt update \
+apt-get install git \
+git clone https://github.com/asasec/ASASEC_KT.git \
+cd ASASEC_KT \
+chmod +x asasec_kali \
+bash asasec_kali
+```
